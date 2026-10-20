@@ -1,7 +1,7 @@
-"""PC-side helpers for an STM32N657 deployment.
+"""Host checks for an STM32N657 network.
 
-The kernels do not replace Cube.AI. They round, pack, quantize, and score a
-network on the host before a flash.
+The graded operation is ``round_fp16``. It is the pybind function itself:
+a dtype the kernel rejects is raised by ``TORCH_CHECK`` in C++.
 """
 
 from pathlib import Path
@@ -32,7 +32,7 @@ __all__ = [
 
 
 def check_export(weights, sample, onnx_path=None):
-    """Return a list of reasons not to flash this graph.
+    """Return reasons not to flash this graph.
 
     ``weights`` is a sequence of parameter tensors. ``sample`` is one model
     input. ``onnx_path``, when set, is scanned for FP16 tensors.

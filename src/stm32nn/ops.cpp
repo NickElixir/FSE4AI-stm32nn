@@ -1,13 +1,15 @@
-// Host FP32 kernels for the Cortex-M55 software part of an STM32 network.
-// Linear: y[m] = bias[m] + sum_k x[k] * weight[m, k]
-// Conv2d (NCHW, groups = 1): for each output site, sum over input channel,
-// then kernel row, then kernel column. An optional fused ReLU follows the sum.
-// compare() is the mean, over rows, of the squared Euclidean logit gap, plus
-// the fraction of rows whose argmax differs.
+// CPU kernels for the host side of an STM32N657 network check.
+// The graded op is round_fp16:
+//   y = x.to(torch.float16).to(torch.float32)
+// IEEE binary16, round ties to even, stored back in float32.
+// The other kernels score and prepare the same network. They are not the
+// specification the README names.
 
 #include <torch/extension.h>
 
 #include <cmath>
+#include <cstdint>
+#include <cstring>
 #include <limits>
 #include <string>
 #include <vector>
@@ -18,6 +20,110 @@ void check_cpu_f32(const torch::Tensor& t, const char* name) {
   TORCH_CHECK(t.device().is_cpu(), name, " must be a CPU tensor");
   TORCH_CHECK(t.scalar_type() == torch::kFloat32, name, " must be float32");
   TORCH_CHECK(t.is_contiguous(), name, " must be contiguous");
+}
+
+// Binary16 from binary32. Subnormal codes are multiples of 2^-24.
+uint16_t float_to_half_bits(float value) {
+  uint32_t bits = 0;
+  std::memcpy(&bits, &value, sizeof(bits));
+  const uint32_t sign = (bits >> 16) & 0x8000u;
+  const uint32_t exp = (bits >> 23) & 0xffu;
+  const uint32_t mant = bits & 0x7fffffu;
+
+  if (exp == 0xffu) {
+    if (mant == 0u) {
+      return static_cast<uint16_t>(sign | 0x7c00u);
+    }
+    uint32_t half_mant = mant >> 13;
+    if (half_mant == 0u) {
+      half_mant = 1u;
+    }
+    return static_cast<uint16_t>(sign | 0x7c00u | half_mant);
+  }
+  if (exp == 0u) {
+    return static_cast<uint16_t>(sign);
+  }
+
+  const int32_t half_exp = static_cast<int32_t>(exp) - 112;
+  if (half_exp >= 31) {
+    return static_cast<uint16_t>(sign | 0x7c00u);
+  }
+  if (half_exp <= 0) {
+    if (half_exp < -10) {
+      return static_cast<uint16_t>(sign);
+    }
+    const uint32_t full = mant | 0x800000u;
+    const int shift = 14 - half_exp;
+    uint32_t truncated = full >> shift;
+    const uint32_t rem_mask = (1u << shift) - 1u;
+    const uint32_t halfway = 1u << (shift - 1);
+    const uint32_t rem = full & rem_mask;
+    if (rem > halfway || (rem == halfway && (truncated & 1u) != 0u)) {
+      truncated += 1u;
+    }
+    if (truncated >= 0x400u) {
+      return static_cast<uint16_t>(sign | (1u << 10));
+    }
+    return static_cast<uint16_t>(sign | truncated);
+  }
+
+  uint32_t half_mant = mant >> 13;
+  const uint32_t round_bit = (mant >> 12) & 1u;
+  const uint32_t sticky = mant & 0xfffu;
+  int32_t out_exp = half_exp;
+  if (round_bit != 0u && (sticky != 0u || (half_mant & 1u) != 0u)) {
+    half_mant += 1u;
+    if (half_mant == 0x400u) {
+      half_mant = 0u;
+      out_exp += 1;
+      if (out_exp >= 31) {
+        return static_cast<uint16_t>(sign | 0x7c00u);
+      }
+    }
+  }
+  return static_cast<uint16_t>(sign | (static_cast<uint32_t>(out_exp) << 10) | half_mant);
+}
+
+float half_bits_to_float(uint16_t half) {
+  const uint32_t sign = static_cast<uint32_t>(half & 0x8000u) << 16;
+  const uint32_t exp = (half >> 10) & 0x1fu;
+  uint32_t mant = half & 0x3ffu;
+  uint32_t bits = 0;
+  if (exp == 0u) {
+    if (mant == 0u) {
+      bits = sign;
+    } else {
+      unsigned shift = 0;
+      while ((mant & 0x400u) == 0u) {
+        mant <<= 1;
+        shift += 1;
+      }
+      mant &= 0x3ffu;
+      const uint32_t exp32 = 113u - shift;
+      bits = sign | (exp32 << 23) | (mant << 13);
+    }
+  } else if (exp == 31u) {
+    bits = sign | 0x7f800000u | (mant << 13);
+  } else {
+    bits = sign | ((exp - 15u + 127u) << 23) | (mant << 13);
+  }
+  float out = 0.f;
+  std::memcpy(&out, &bits, sizeof(out));
+  return out;
+}
+
+torch::Tensor round_fp16_kernel(const torch::Tensor& input) {
+  TORCH_CHECK(input.device().is_cpu(), "input must be a CPU tensor");
+  TORCH_CHECK(input.scalar_type() == torch::kFloat32, "input must be float32");
+  const torch::Tensor src = input.contiguous();
+  auto output = torch::empty(src.sizes(), src.options());
+  const float* in = src.data_ptr<float>();
+  float* out = output.data_ptr<float>();
+  const int64_t n = src.numel();
+  for (int64_t i = 0; i < n; ++i) {
+    out[i] = half_bits_to_float(float_to_half_bits(in[i]));
+  }
+  return output;
 }
 
 torch::Tensor linear_kernel(
@@ -48,7 +154,7 @@ torch::Tensor linear_kernel(
 
   for (int64_t n = 0; n < rows; ++n) {
     for (int64_t m = 0; m < out_f; ++m) {
-      float acc = b ? b[m] : 0.f;
+      float acc = b != nullptr ? b[m] : 0.f;
       const float* w_row = w + m * in_f;
       const float* x_row = x + n * in_f;
       for (int64_t k = 0; k < in_f; ++k) {
@@ -104,7 +210,7 @@ torch::Tensor conv2d_kernel(
     for (int64_t oc = 0; oc < out_c; ++oc) {
       for (int64_t oh = 0; oh < out_h; ++oh) {
         for (int64_t ow = 0; ow < out_w; ++ow) {
-          float acc = b ? b[oc] : 0.f;
+          float acc = b != nullptr ? b[oc] : 0.f;
           for (int64_t ic = 0; ic < in_c; ++ic) {
             for (int64_t kh = 0; kh < k_h; ++kh) {
               const int64_t ih = oh * stride_h - pad_h + kh;
@@ -185,11 +291,6 @@ std::vector<double> compare_kernel(const torch::Tensor& logits, const torch::Ten
   }
   const double n = static_cast<double>(rows);
   return {gap_sum / n, static_cast<double>(disagree) / n, cos_sum / n};
-}
-
-torch::Tensor round_fp16_kernel(const torch::Tensor& input) {
-  check_cpu_f32(input, "input");
-  return input.to(torch::kFloat16).to(torch::kFloat32);
 }
 
 torch::Tensor to_nhwc_kernel(const torch::Tensor& input) {
@@ -353,6 +454,11 @@ std::vector<std::string> export_issues_kernel(
 
 PYBIND11_MODULE(TORCH_EXTENSION_NAME, module) {
   module.def(
+      "round_fp16",
+      &round_fp16_kernel,
+      "Round each finite float32 element to IEEE binary16, ties to even, and store it as float32",
+      py::arg("input"));
+  module.def(
       "linear",
       &linear_kernel,
       "FP32 linear layer, input-feature accumulation, optional fused ReLU",
@@ -378,7 +484,6 @@ PYBIND11_MODULE(TORCH_EXTENSION_NAME, module) {
       "Mean squared Euclidean logit gap, argmax disagreement, and mean cosine",
       py::arg("logits"),
       py::arg("reference"));
-  module.def("round_fp16", &round_fp16_kernel, "Cast to IEEE FP16 nearest and store back in FP32", py::arg("input"));
   module.def("to_nhwc", &to_nhwc_kernel, "NCHW to contiguous NHWC", py::arg("input"));
   module.def("to_nchw", &to_nchw_kernel, "NHWC to contiguous NCHW", py::arg("input"));
   module.def(
