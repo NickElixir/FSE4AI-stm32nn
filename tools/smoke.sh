@@ -1,7 +1,7 @@
 #!/bin/bash
 python3 -m venv /tmp/smoke-build &&
 /tmp/smoke-build/bin/pip install torch==2.12.1 --index-url https://download.pytorch.org/whl/cpu &&
-/tmp/smoke-build/bin/pip wheel . --no-deps -w dist &&
+/tmp/smoke-build/bin/pip wheel . --no-deps --no-build-isolation -w dist &&
 ls dist | grep linux &&
 python3 -m venv /tmp/smoke-try &&
 /tmp/smoke-try/bin/pip install torch==2.12.1 --index-url https://download.pytorch.org/whl/cpu &&
