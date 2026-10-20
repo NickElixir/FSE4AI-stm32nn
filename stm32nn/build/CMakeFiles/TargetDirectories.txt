@@ -1,3 +1,0 @@
-/home/alex/GitRepos/MScThesisBashirov/FSE4AIProject/stm32nn/build/CMakeFiles/stm32nn_C.dir
-/home/alex/GitRepos/MScThesisBashirov/FSE4AIProject/stm32nn/build/CMakeFiles/edit_cache.dir
-/home/alex/GitRepos/MScThesisBashirov/FSE4AIProject/stm32nn/build/CMakeFiles/rebuild_cache.dir

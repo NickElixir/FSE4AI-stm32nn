@@ -1,0 +1,35 @@
+{
+  "n": 200,
+  "seed": 0,
+  "board_file_mse": 2.4221379292960616e-05,
+  "board_top1": 0.995,
+  "board_disagreement": 0.0,
+  "latency_ms_mean": 520.93787,
+  "rows": {
+    "fp16_host": {
+      "logit_mse": 2.4217195320181702e-05,
+      "argmax_disagreement": 0.0,
+      "mean_cosine": 0.9999999923261064,
+      "label_accuracy": 0.9950000047683716
+    },
+    "helium": {
+      "logit_mse": 2.422037064681179e-05,
+      "argmax_disagreement": 0.0,
+      "mean_cosine": 0.999999992326287,
+      "label_accuracy": 0.9950000047683716
+    },
+    "cubeai_fp32": {
+      "logit_mse": 5.4453396952362025,
+      "argmax_disagreement": 0.0,
+      "mean_cosine": 0.9982170352792287,
+      "label_accuracy": 0.9950000047683716
+    }
+  },
+  "export_issues_on_fp32_sample": [],
+  "export_issues_on_bad_example": [
+    "weight 0 has 257 channels on axis 0, a prime above 64; Neural-ART has failed to map some prime channel counts",
+    "sample values exceed 1; expected pixels divided by 255"
+  ],
+  "first_conv_int8_weight_mse": 5.045163220529503e-07,
+  "fp32_label_accuracy": 0.9950000047683716
+}
