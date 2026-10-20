@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.29)  20 OCT 2026 10:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026/Arch Linux) (preloaded format=pdflatex 2026.6.29)  20 OCT 2026 11:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -852,20 +852,20 @@ Dictionary: translator-theorem-dictionary, Language: English
 ) (./main.nav) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-LaTeX Font Info:    Trying to load font information for U+msa on input line 29.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 28.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 29.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 28.
 
 
 (/usr/share/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Trying to load font information for OT1+mathkerncmss on inp
-ut line 29.
+ut line 28.
 
 (/usr/share/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2020/01/31 Fontinst v1.933 font definitions for OT1/ma
@@ -877,52 +877,52 @@ thkerncmss.
 
 ] [4
 
+] [5
+
+] [6
+
+] [7
+
+] [8
+
 ]
-<../stm32nn_report/figures/helium_gap_hist.png, id=43, 448.074pt x 260.172pt>
+<../stm32nn_report/figures/helium_gap_hist.png, id=68, 448.074pt x 260.172pt>
 File: ../stm32nn_report/figures/helium_gap_hist.png Graphic file (type png)
 <use ../stm32nn_report/figures/helium_gap_hist.png>
 Package pdftex.def Info: ../stm32nn_report/figures/helium_gap_hist.png  used on
- input line 60.
-(pdftex.def)             Requested size: 310.70361pt x 180.41208pt.
- [5
+ input line 113.
+(pdftex.def)             Requested size: 286.80426pt x 166.53331pt.
+ [9
 
  <../stm32nn_report/figures/helium_gap_hist.png>]
-<../stm32nn_report/figures/mse_bars.png, id=51, 448.074pt x 260.172pt>
+<../stm32nn_report/figures/mse_bars.png, id=76, 448.074pt x 260.172pt>
 File: ../stm32nn_report/figures/mse_bars.png Graphic file (type png)
 <use ../stm32nn_report/figures/mse_bars.png>
 Package pdftex.def Info: ../stm32nn_report/figures/mse_bars.png  used on input 
-line 67.
-(pdftex.def)             Requested size: 310.70361pt x 180.41208pt.
- [6
+line 121.
+(pdftex.def)             Requested size: 278.83578pt x 161.90837pt.
+
+[10
 
  <../stm32nn_report/figures/mse_bars.png>]
-<../stm32nn_report/figures/cubeai_gap_hist.png, id=58, 448.074pt x 260.172pt>
+<../stm32nn_report/figures/cubeai_gap_hist.png, id=83, 448.074pt x 260.172pt>
 File: ../stm32nn_report/figures/cubeai_gap_hist.png Graphic file (type png)
 <use ../stm32nn_report/figures/cubeai_gap_hist.png>
 Package pdftex.def Info: ../stm32nn_report/figures/cubeai_gap_hist.png  used on
- input line 72.
-(pdftex.def)             Requested size: 286.80426pt x 166.53331pt.
- [7
+ input line 129.
+(pdftex.def)             Requested size: 270.86732pt x 157.27948pt.
+ [11
 
  <../stm32nn_report/figures/cubeai_gap_hist.png>]
-<../stm32nn_report/figures/latency_hist.png, id=66, 448.074pt x 260.172pt>
+<../stm32nn_report/figures/latency_hist.png, id=90, 448.074pt x 260.172pt>
 File: ../stm32nn_report/figures/latency_hist.png Graphic file (type png)
 <use ../stm32nn_report/figures/latency_hist.png>
 Package pdftex.def Info: ../stm32nn_report/figures/latency_hist.png  used on in
-put line 79.
-(pdftex.def)             Requested size: 286.80426pt x 166.53331pt.
+put line 137.
+(pdftex.def)             Requested size: 270.86732pt x 157.27948pt.
+ [12
 
-[8
-
- <../stm32nn_report/figures/latency_hist.png>] [9
-
-] [10
-
-] [11
-
-] [12
-
-] [13
+ <../stm32nn_report/figures/latency_hist.png>] [13
 
 ]
 \tf@nav=\write6
@@ -944,27 +944,28 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 21563 strings out of 469515
- 409981 string characters out of 5470807
- 791081 words of memory out of 5000000
- 49751 multiletter control sequences out of 15000+600000
- 639202 words of font info for 82 fonts, out of 8000000 for 9000
+ 21570 strings out of 469515
+ 410259 string characters out of 5470807
+ 791019 words of memory out of 5000000
+ 49758 multiletter control sequences out of 15000+600000
+ 636915 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  128i,11n,123p,397b,454s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmss12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cm
-ss8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr
-/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/share/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmtt10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pf
-b></usr/share/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on main.pdf (13 pages, 219384 bytes).
+texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texmf-dist/font
+s/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texmf-dist/fonts/type1/public/a
+msfonts/cm/cmss10.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cms
+s12.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/s
+hare/texmf-dist/fonts/type1/public/amsfonts/cm/cmssi10.pfb></usr/share/texmf-di
+st/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmsy6.pfb></usr/share/texmf-dist/fonts/type1/public/amsfont
+s/cm/cmsy8.pfb></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb
+></usr/share/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/share/te
+xmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on main.pdf (13 pages, 234202 bytes).
 PDF statistics:
- 161 PDF objects out of 1000 (max. 8388607)
- 106 compressed objects within 2 object streams
+ 166 PDF objects out of 1000 (max. 8388607)
+ 109 compressed objects within 2 object streams
  27 named destinations out of 1000 (max. 500000)
  63 words of extra memory for PDF output out of 10000 (max. 10000000)
 

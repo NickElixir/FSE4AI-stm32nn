@@ -5,7 +5,7 @@
 \usepackage{graphicx}
 \graphicspath{{../stm32nn_report/figures/}}
 
-\title{CNN logits on the PC and on the STM32N657}
+\title{A host check for an STM32N657 CNN}
 \author{Alexander Bashirov}
 \date{20 October 2026}
 
@@ -15,118 +15,134 @@
   \titlepage
 \end{frame}
 
-\begin{frame}{The question}
-  One MNIST CNN: two \(3\times 3\) convolutions, two pools, two linear layers.
+\begin{frame}{What was built}
+  \texttt{stm32nn} is a CPU PyTorch extension for the host side of an STM32N657 export.
 
-  Three ways to run it:
   \begin{itemize}
-    \item PC, FP32 checkpoint.
-    \item PC, every weight cast to IEEE FP16 and stored back in FP32.
-    \item The NUCLEO-N657X0-Q, same rounding, Helium, FP32 activations.
+    \item The graded operation is \texttt{stm32nn.round\_fp16}.
+    \item The same module scores a network and prepares buffers before a flash.
+    \item It is packaged as a Linux wheel: \texttt{CppExtension}, six pytest tests, \texttt{make}, \texttt{tools/smoke.sh}, and a two-stage Ubuntu 24.04 image.
   \end{itemize}
 
-  A fourth program, Cube.AI's FP32 graph, was already measured on the same 200 images.
+  \texttt{smoke.sh} prints \texttt{OK}. \texttt{docker run --rm fse-ops:0.1} prints \texttt{6 passed}.
 \end{frame}
 
-\begin{frame}{Three different scores}
+\begin{frame}{The network}
+  One MNIST CNN, trained 10 epochs on the PC.
+
   \begin{itemize}
-    \item Logit MSE: mean over images of \(\|z - z_{\mathrm{FP32}}\|_2^2\). Ten pre-softmax numbers.
+    \item Two \(3\times 3\) convolutions, 32 base channels, two max-pools.
+    \item Two linear layers, hidden width 128, dropout 0.25, weight decay \(10^{-5}\).
+    \item 421\,642 parameters. Best test accuracy 99.25\%, final test accuracy 99.14\%.
+  \end{itemize}
+
+  That checkpoint is the one loaded into the Helium firmware: FP16 weights, FP32 activations.
+\end{frame}
+
+\begin{frame}{The graded operation}
+  \texttt{round\_fp16} takes a CPU float32 tensor and returns float32 of the same shape.
+
+  Each finite element is rounded to the nearest IEEE binary16 value, ties to even, and stored back in float32. The specification line is
+  \[
+    \texttt{x.to(torch.float16).to(torch.float32)}.
+  \]
+
+  An integer tensor raises \texttt{RuntimeError} from \texttt{TORCH\_CHECK} in the C++ kernel. The six tests cover shape, dtype, an exact value, a value a copy of the input cannot survive, a leading batch of 4, and that error.
+\end{frame}
+
+\begin{frame}{What the measurement used}
+  \begin{itemize}
+    \item \texttt{round\_fp16} cast every parameter of the CNN, then the network ran again in FP32.
+    \item \texttt{compare} returns three numbers per pair of logit tensors: mean squared Euclidean gap, fraction of rows whose argmax differs, and mean cosine.
+    \item \texttt{to\_nhwc} / \texttt{to\_nchw} match the channel-last buffers of a generated graph.
+    \item \texttt{quantize\_per\_channel} is symmetric int8, scale \(\max|w|/127\), codes in \([-127,127]\), returned as float32.
+    \item \texttt{check\_export} is empty on this CNN with a zero \(28\times 28\) sample.
+  \end{itemize}
+
+  On the first convolution, that int8 rounding moves the weights by a mean square of \(5.05\times 10^{-7}\). That number is a weight change on the PC.
+\end{frame}
+
+\begin{frame}{How the board run was made}
+  The NUCLEO-N657X0-Q was on the ST-LINK. The Helium weight-only CNN was loaded into RAM and held running.
+
+  \begin{itemize}
+    \item MNIST test set, \texttt{numpy} seed 0, 200 images, indices sorted.
+    \item Pixels divided by 255, sent as one NCHW float32 image (3136 bytes).
+    \item The firmware cycle counter times the kernel. The serial transfer is outside that number.
+  \end{itemize}
+
+  The same 200 images were scored on the PC twice: stored FP32 weights, then every parameter passed through \texttt{round\_fp16}. Cube.AI's FP32 graph is the saved serial run of this same subset.
+\end{frame}
+
+\begin{frame}{Three scores, one subset}
+  \begin{itemize}
+    \item Logit MSE: mean over images of \(\|z - z_{\mathrm{FP32}}\|_2^2\). Ten pre-softmax numbers. This is not an average over the 10 classes.
     \item Cosine: mean over images of the cosine between those two vectors.
     \item Label accuracy: fraction of images whose largest logit is the written digit.
   \end{itemize}
-  The subset is seed 0, 200 test images, pixels divided by 255.
+
+  A large squared gap can sit next to a cosine near 1 and next to an unchanged winning class. The table keeps all three.
 \end{frame}
 
-\begin{frame}{What matches}
+\begin{frame}{Results}
   \begin{center}
-  \small
+  \scriptsize
   \begin{tabular}{lrrr}
     \toprule
     Run & Logit MSE & Cosine & Class differs \\
     \midrule
-    PC, FP16 rounding & \(2.422\times 10^{-5}\) & 1.000 & 0/200 \\
-    Helium on the board & \(2.422\times 10^{-5}\) & 1.000 & 0/200 \\
-    Cube.AI FP32 & 5.445 & 0.998 & 0/200 \\
+    PC, \texttt{round\_fp16} on the weights & \(2.421720\times 10^{-5}\) & 1.000 & 0/200 \\
+    Helium on the board, 20 October & \(2.422037\times 10^{-5}\) & 1.000 & 0/200 \\
+    Cube.AI FP32, same 200 images & 5.445340 & 0.998 & 0/200 \\
     \bottomrule
   \end{tabular}
   \end{center}
 
-  Label accuracy is 0.995 for the FP32 network and for all three rows. 199 of 200 digits.
+  \vspace{0.6em}
+  Label accuracy is 0.995 on the untouched FP32 network and on all three rows: 199 of 200 digits.
+
+  The eval script's own board file reports \(2.422138\times 10^{-5}\). \texttt{compare} and that file differ in the last digits.
 \end{frame}
 
-\begin{frame}{Helium stays next to the PC}
+\begin{frame}{Helium against the PC, image by image}
   \centering
-  \includegraphics[width=0.78\textwidth]{helium_gap_hist.png}
+  \includegraphics[width=0.72\textwidth]{helium_gap_hist.png}
+
+  \vspace{0.4em}
+  Every image stays small. Host rounding and the board differ by about \(3\times 10^{-9}\) in the mean: \(2.421720\times 10^{-5}\) against \(2.422037\times 10^{-5}\).
 \end{frame}
 
-\begin{frame}{Cube.AI FP32 does not}
+\begin{frame}{The three gaps on one axis}
   \centering
-  \includegraphics[width=0.78\textwidth]{mse_bars.png}
+  \includegraphics[width=0.70\textwidth]{mse_bars.png}
 
-  The right-hand bar is a different compiled graph: 11 software steps and 4 accelerator steps. The class still matches.
+  \vspace{0.3em}
+  The left two bars are the FP16 rounding, on the PC and on the board. The right bar is the Cube.AI FP32 graph, about \(2\times 10^{5}\) times larger. The winning class still matches on all 200 images.
 \end{frame}
 
-\begin{frame}{Same images, logarithmic gaps}
+\begin{frame}{Cube.AI, per image}
   \centering
-  \includegraphics[width=0.72\textwidth]{cubeai_gap_hist.png}
+  \includegraphics[width=0.68\textwidth]{cubeai_gap_hist.png}
+
+  \vspace{0.3em}
+  The axis is \(\log_{10}\) of the squared gap, because the raw values span more than one decade. Cosine on this run is 0.998217. Argmax disagreement is 0/200.
 \end{frame}
 
 \begin{frame}{Time on the board}
   \centering
-  \includegraphics[width=0.72\textwidth]{latency_hist.png}
-
-  Mean kernel time 510.4\,ms on the 20 October run. The serial transfer is not included.
-\end{frame}
-
-\begin{frame}{The same CNN, scored with \texttt{round\_fp16}}
-  The checkpoint was trained for 10 epochs (best MNIST test accuracy 99.25\%).
-  The Helium firmware on the board is that network: FP16 weights, FP32 activations.
-
-  On the PC, \texttt{stm32nn.round\_fp16} cast every parameter.
-  \texttt{stm32nn.compare} then scored 200 images, seed 0.
-
-  \begin{itemize}
-    \item Host, after \texttt{round\_fp16}: logit MSE \(2.422\times 10^{-5}\), class changes 0/200.
-    \item Board, this morning: logit MSE \(2.422\times 10^{-5}\), class changes 0/200, 510.4\,ms.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{The graded operation}
-  \texttt{stm32nn.round\_fp16} is one line of PyTorch:
+  \includegraphics[width=0.68\textwidth]{latency_hist.png}
 
   \vspace{0.4em}
-  \texttt{x.to(torch.float16).to(torch.float32)}
-
-  \vspace{0.6em}
-  Each finite float32 element is rounded to IEEE binary16, ties to even, and stored as float32.
-  An integer tensor raises \texttt{RuntimeError} from \texttt{TORCH\_CHECK}.
+  Mean kernel time 510.4\,ms (20 October). The 200 samples sit between 510.4\,ms and 510.5\,ms. About 1.96 inferences per second, serial time excluded.
 \end{frame}
 
-\begin{frame}{What \texttt{stm32nn} adds}
-  A C++ PyTorch module on the PC. It does not flash the board.
+\begin{frame}{Reading the table}
   \begin{itemize}
-    \item \texttt{round\_fp16}: the cast used for the matching Helium run.
-    \item \texttt{to\_nhwc}, \texttt{to\_nchw}: channel-last buffers, as in the generated CNN.
-    \item \texttt{quantize\_per\_channel}: symmetric int8, scale \(=\max|w|/127\).
-    \item \texttt{conv2d}, \texttt{linear}, \texttt{max\_pool2d}: separate steps, optional ReLU.
-    \item \texttt{compare}: MSE, class disagreement, cosine.
-    \item \texttt{check\_export}: FP16 weights, a large prime channel count, pixels not divided by 255.
+    \item FP16 rounding of this CNN moves the logits by about \(2.4\times 10^{-5}\) and changes no class on this subset.
+    \item The Helium program, FP16 weights and FP32 activations, lands on that same number.
+    \item Cube.AI's FP32 graph moves the logits by 5.445 and still picks the same class on every image. Cosine stays at 0.998.
+    \item Label accuracy does not see any of that movement: it is 199/200 for FP32, for the host rounding, for Helium, and for Cube.AI.
   \end{itemize}
-\end{frame}
-
-\begin{frame}{What the extension does not do}
-  \begin{itemize}
-    \item It does not replace Cube.AI's convolution.
-    \item The multiply-add loop Cube.AI calls is inside a Cortex-M55 library, not in a C file we can copy.
-    \item A custom ONNX operator is not compiled by ST Edge AI.
-    \item The \(5.445\) gap remains until that generated graph is changed, or until the PC calls that same graph.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{Tonight}
-  The probe enumerated, the serial port answered, and the Helium CNN ran all 200 images.
-
-  Result: the board and the PC rounding agree. Cube.AI's FP32 CNN, on the same images, does not agree in the logits and does agree in the class.
 \end{frame}
 
 \end{document}
