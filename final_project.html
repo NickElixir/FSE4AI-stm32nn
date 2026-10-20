@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Final project: ship a PyTorch extension</title>
+<style>
+html { background: #f4f1ea; color: #1c1915; }
+body {
+  margin: 0 auto;
+  max-width: 46rem;
+  padding: 2.2rem 1.4rem 4rem;
+  font-family: "Iowan Old Style", Palatino, Georgia, serif;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+h1 { font-size: 1.8rem; font-weight: 600; line-height: 1.15; margin: 0 0 0.8rem; }
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 1.6rem 0 0.4rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid #d9d1c6;
+}
+h3 { font-size: 1.1rem; font-weight: 600; margin: 1.2rem 0 0.3rem; }
+p { margin: 0.4rem 0 0.7rem; }
+a { color: #1c1915; }
+code {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.92em;
+  background: #e7e1d6;
+  padding: 0.05rem 0.28rem;
+}
+pre {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.92rem;
+  line-height: 1.4;
+  background: #1c1915;
+  color: #f6f1e7;
+  padding: 0.8rem 0.9rem;
+  white-space: pre-wrap;
+  margin: 0.4rem 0 0.8rem;
+}
+table { width: 100%; border-collapse: collapse; margin: 0.4rem 0 1rem; }
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.4rem 0.55rem;
+  border-bottom: 1px solid #d9d1c6;
+}
+th {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: #6b6258;
+  font-weight: 600;
+}
+ul { padding-left: 1.2rem; }
+li { margin: 0.25rem 0; }
+ul.choices { list-style: none; padding-left: 0.2rem; margin: 0 0 0.9rem; }
+ul.choices li { margin: 0.12rem 0; }
+</style>
+</head>
+<body>
+<h1>Final project: ship a PyTorch extension</h1>
+<p>You ship a custom PyTorch operation as a proper C++ extension: a wheel a stranger can <code>pip install</code>, tests that prove it, an image that runs it, and a git history that shows the team built it. The op is yours; the engineering is the course. The project is one week of work for a team of three and 40% of the course grade. Everything this page asks for is a tool the nine lectures taught, and the table at the end names the exact place each lecture shows up.</p>
+<p>Develop inside the course sandbox. The grading machine is CPU-only Linux, and your op has to run there: on CPU tensors, from the wheel, on a machine that has never seen your laptop. A Dockerfile that starts from the clean course image sees only what the repository contains — packages you installed by hand in <code>lab</code> do not exist there.</p>
+
+<h2>Teams</h2>
+<ul>
+<li>3 students per team. The deadline is on <a href="https://lms.skoltech.ru">lms.skoltech.ru</a>. One submission per team: one zip, named after one member&#8217;s Skoltech login, holding the project directory <strong>with its <code>.git</code> directory inside</strong> — the history of changes is part of the submission. The grader unpacks that zip fresh, so what is inside the zip is what is graded.</li>
+<li>Every member needs at least one commit under their own git author email, the same email as in <code>AUTHORS</code>. A member with no commit gets 0 for the project; the other two are still graded.</li>
+</ul>
+
+<h2>The op</h2>
+<p>Pick one tensor-to-tensor operation that is expressible as <strong>one line of pure PyTorch</strong>. That line is the specification: your C++ must produce the same result, and your tests compare against it. The op is yours — not <code>clamp01</code>, not <code>double</code>, not an op built in class. Examples of the right size:</p>
+<ul>
+<li>clipped square: <code>x.clamp(-3, 3).square()</code></li>
+<li>signed log1p: <code>torch.sign(x) * torch.log1p(x.abs())</code></li>
+<li>leaky clip: <code>torch.where(x &gt; 0, x, 0.1 * x)</code></li>
+</ul>
+<p><code>README.md</code> states the Python name, for example <code>fse_ops.clipped_square</code>, and the formula in words. The grader reads that formula and calls your function on tensors you have never seen.</p>
+
+<h2>CPU is required</h2>
+<ul>
+<li>The grading machine is CPU-only Linux. The op checks run first, and they call your op on CPU tensors: a submission whose op does not run on CPU fails them, and nothing after that can rescue it.</li>
+<li>Build one code path — the C++ kernel for CPU tensors, built by <code>setup.py</code> with <code>CppExtension</code>. There is no device dispatch to write and no second kernel to keep green.</li>
+</ul>
+
+<h2>What the repository contains</h2>
+<pre>team-repo/
+  README.md                  # the function name, the formula in words,
+                             # build/install/test commands
+  AUTHORS                    # one &quot;Name &lt;email&gt;&quot; per member,
+                             # the same emails as git
+  pyproject.toml             # the project builds with pip
+  setup.py                   # CppExtension — the CPU build —
+                             # driven by BuildExtension
+  src/
+    fse_ops/
+      __init__.py            # exports the op:
+                             # from fse_ops import clipped_square
+      ops.cpp                # the CPU implementation
+  tests/
+    test_op.py               # pytest, at least one test per kind,
+                             # at most two per kind
+  tools/
+    smoke.sh                 # installs the wheel into a fresh venv
+                             # and proves it
+  Makefile                   # wheel, install, test, clean
+  Dockerfile                 # two stages: a builder that wheels the project,
+                             # a final stage installs torch, then the wheel
+  .gitignore                 # dist/, build/, __pycache__/
+                             # stay out of the commits
+  .dockerignore              # .git, dist, build stay out of the build context
+  .github/
+    workflows/
+      ci.yml                 # on push: ruff and pytest</pre>
+<p>The names can differ — your package, your op, your test files — but the shape and every fact in the comments may not: this tree is the same one the checks of the table below grade.</p>
+
+<h2>Tests</h2>
+<p>At least five pytest tests, all on CPU. The list below is five kinds: each kind needs at least one test, and a kind may have at most two — so your suite holds five to ten tests:</p>
+<ul>
+<li>the shape of the output</li>
+<li>the dtype of the output</li>
+<li>one exact numeric input, compared with the pure-PyTorch specification line</li>
+<li>a second input that a fake op cannot survive: several values the formula treats differently, so the correct output differs from the input itself and from element to element. For the clipped square, <code>[-5.0, 0.5, 2.0]</code> must give <code>[9.0, 0.25, 4.0]</code> — not the input back (that is a no-op), not one result copied to every position (that is one element computed and reused)</li>
+<li>the error path: <code>pytest.raises(RuntimeError)</code> on an input your <code>TORCH_CHECK</code> rejects</li>
+</ul>
+<p>A failed <code>TORCH_CHECK</code> surfaces in Python as <code>RuntimeError</code>. Your <code>TORCH_CHECK</code> must reject at least one real mistake — a dtype the op does not accept: an op that takes <code>float32</code> only raises on an integer tensor.</p>
+<p><code>pytest</code> must pass against the <strong>installed wheel</strong>, not against <code>pip install -e</code> pointed at a laptop checkout. The tests are copied out of the source tree before the run, so the run cannot import the sources instead of the wheel.</p>
+
+<h2>The hidden checks</h2>
+<p>Checks A2 and A3 — 14 points between them — are graded with a small pytest file the grader wrote and your repository has never seen. Nothing else about them is hidden: the whole protocol is on this page, and the only thing you do not know in advance is which values the grader picked. So rehearse it: write the same three calls yourselves and run them against the installed wheel from a fresh venv. If your version of the file passes, the grader&#8217;s passes too — the two files differ only in the tensor values.</p>
+<p>The setup is this page&#8217;s own pipeline: the grader unpacks your zip, builds the wheel as in <code>D1</code>, installs it into a fresh venv with torch from the CPU index as in <code>D2</code>, and runs the grader&#8217;s file from a neutral directory. The file imports the function named in your README and makes three calls:</p>
+<ul>
+<li><strong>A normal-range call.</strong> One tensor of a few values inside the range the formula in your README describes. For the clipped square from the examples above, the grader might call <code>clipped_square(torch.tensor([-5.0, 0.5, 2.0]))</code> and expect <code>tensor([9.0000, 0.2500, 4.0000])</code> — exactly what the specification line <code>x.clamp(-3, 3).square()</code> produces on the same tensor, computed by the grader on the spot. The comparison is exact: <code>torch.equal</code>, value for value, no tolerance.</li>
+<li><strong>The same values with a leading batch dimension of 4.</strong> A tensor of shape <code>(4, &#8230;)</code> — four rows of the first call&#8217;s shape, for example four copies of it stacked. The op must treat the new leading dimension as just more rows: every row&#8217;s result equals the specification line&#8217;s result for that row. Same exact comparison.</li>
+<li><strong>The contract violation.</strong> A tensor your README&#8217;s rules reject — for an op that takes <code>float32</code>, an integer tensor: <code>clipped_square(torch.tensor([1, 2, 3]))</code>. The call must raise <code>RuntimeError</code>, and the traceback must come from the extension — from your <code>TORCH_CHECK</code> in C++, not from a Python <code>if</code> in the wrapper that refuses before the C++ ever runs.</li>
+</ul>
+<p>What each call is worth. If either value call is wrong, <code>A3</code> scores 0 — all ten points: the two value calls are the definition of &#8220;the op works&#8221;. If the violation call fails to raise, or raises before reaching your C++, <code>A2</code> scores 0 — all four points. Everything else on this page can be green; these three calls alone decide 14 of the 100.</p>
+<p>One warning ties the calls together: the grader compares against the formula line <em>in your README</em>, value for value. A formula vaguer than the op loses — the grader&#8217;s values are chosen to expose the gap between what the code does and what the README claims it does.</p>
+
+<h2>Wheel, smoke script, image</h2>
+<p>The proof commands of this section run inside the course container. From the course directory that contains <code>compose.yaml</code>: <code>docker compose up -d</code>, then <code>docker compose exec lab bash</code>. Inside lab that directory is mounted at <code>/course</code>, and your checkout of the team repository sits at <code>/course/team-repo</code>. From the repository directory, the wheel is built and installed into a fresh venv:</p>
+<pre>python3 -m venv /tmp/build-venv
+/tmp/build-venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+/tmp/build-venv/bin/pip wheel . --no-deps -w dist
+python3 -m venv /tmp/try-venv
+/tmp/try-venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+/tmp/try-venv/bin/pip install dist/*.whl</pre>
+<p>The proof of the wheel is pytest, run by the venv that holds it:</p>
+<pre>/tmp/try-venv/bin/pip install pytest
+cp -r /course/team-repo/tests /tmp/proj-tests
+cd /tmp &amp;&amp; /tmp/try-venv/bin/python -m pytest -q /tmp/proj-tests</pre>
+<p>The last line prints <code>5 passed</code> — or more.</p>
+<p>The wheel name has four fields, dashed: distribution, version, Python tag, platform tag. The Python tag and the platform tag pin a compiled wheel to one interpreter version and one operating system, and the platform tag follows the machine that builds: the lecture&#8217;s Apple Silicon lab built <code>linux_aarch64</code>, an Intel or AMD Linux machine builds <code>linux_x86_64</code>. The graded wheel is the one built on the grading machine, and the grading machine is Intel/AMD Linux, so the graded tag is <code>linux_x86_64</code>. Your own lab cannot produce that tag and does not have to. <code>--no-deps</code> keeps torch out of your wheel; every environment installs torch itself, from the CPU index <code>https://download.pytorch.org/whl/cpu</code>.</p>
+<p><code>tools/smoke.sh</code> is the whole proof in one command. It is bash: line 1 is the shebang <code>#!/bin/bash</code>, and you mark it executable once with <code>chmod 755 tools/smoke.sh</code>, so <code>./tools/smoke.sh</code> runs it. Its steps are joined with <code>&amp;&amp;</code>: <code>&amp;&amp;</code> runs the next command only after a clean exit, so the first failing step ends the script — green continues, red stops. The script builds the wheel into <code>dist/</code>, greps the wheel listing for the <code>linux</code> platform tag, installs the wheel into a fresh venv together with CPU torch, imports the function from a neutral directory, calls it once, and prints <code>OK</code>:</p>
+<pre>#!/bin/bash
+python3 -m venv /tmp/smoke-build &amp;&amp;
+/tmp/smoke-build/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu &amp;&amp;
+/tmp/smoke-build/bin/pip wheel . --no-deps -w dist &amp;&amp;
+ls dist | grep linux &amp;&amp;
+... &amp;&amp;
+echo OK</pre>
+<p>The <code>...</code> step is yours to fill, the same arrangement as the venv commands above: a second, fresh venv — one that has never seen the source tree — installs CPU torch and then <code>dist/*.whl</code>, and from <code>/tmp</code> imports your function and calls it on one tensor. The first run is slow: torch downloads once. The last line prints <code>OK</code>, and it prints only when every step before it exited 0 — if the script exits 0, a stranger&#8217;s machine is satisfied.</p>
+<p>The <code>Dockerfile</code> builds an image that contains CPU torch and your wheel, and <code>docker run</code> on that image executes <code>pytest</code> — green, from the wheel, not from source. Because <code>.dockerignore</code> keeps <code>dist</code> out of the build context, the wheel is not taken from <code>dist/</code>: the image builds it itself, in the two stages of the docker lecture — work fat, ship thin. A builder stage installs torch and runs <code>pip wheel</code>; the final stage installs torch first and your wheel second, copies the tests in, and leaves the compiler behind. The first <code>docker build</code> is slow: the CPU torch wheel downloads once, and the installs take a few minutes — the layer cache keeps it for next time.</p>
+<pre>FROM ... AS build
+WORKDIR /src
+RUN python3 -m pip install --break-system-packages torch --index-url https://download.pytorch.org/whl/cpu
+COPY . .
+RUN python3 -m pip wheel . --no-deps -w /wheels
+
+FROM ...
+RUN python3 -m pip install --break-system-packages torch --index-url https://download.pytorch.org/whl/cpu
+COPY --from=build /wheels /wheels
+RUN python3 -m pip install --break-system-packages /wheels/*.whl
+COPY tests /opt/tests
+CMD [...]</pre>
+<p>The three <code>...</code> are yours to fill, and each is named: the first is the builder&#8217;s <code>FROM</code> — the course base image, the one lab runs on — with the stage named <code>AS build</code>; the second <code>FROM</code> starts the final stage from the same base; the <code>CMD</code> is the image&#8217;s default command, the exact run <code>docker run</code> proves: <code>[&quot;python3&quot;, &quot;-m&quot;, &quot;pytest&quot;, &quot;-q&quot;, &quot;/opt/tests&quot;]</code> — pytest against the installed wheel, pointed at the copied-in tests.</p>
+<p>Build and run happen on the laptop, where the daemon lives, from the repository directory:</p>
+<pre>docker build -t fse-ops:0.1 .
+docker run --rm fse-ops:0.1</pre>
+<p>The container runs the tests against the wheel the image installed; the last line prints <code>5 passed</code> — or more. A red test exits nonzero, and so does the container.</p>
+
+<h2>Where each lecture shows up</h2>
+<table><thead><tr><th>Lecture</th><th>Where it is load-bearing</th></tr></thead><tbody>
+<tr><td>1&#8211;2 shell, text tools</td><td><code>tools/smoke.sh</code> is a bash script: a shebang on the first line, <code>grep</code> asserting the wheel tag is in the filename</td></tr>
+<tr><td>3 ssh, keys, file modes</td><td>the executable bit on <code>tools/smoke.sh</code> — a script you intend to run is given <code>chmod 755</code>. The remote half of the lecture is not graded here: development and grading both stay inside the course containers, so no requirement in this project needs ssh.</td></tr>
+<tr><td>4 git</td><td>branches, a merge into the default branch, commits from every member under the email in <code>AUTHORS</code></td></tr>
+<tr><td>5 make, the extension</td><td>the <code>Makefile</code> automates the workflow; the op itself is <code>CppExtension</code> C++ with <code>TORCH_CHECK</code></td></tr>
+<tr><td>6 docker</td><td>the image builds on a CPU machine and runs pytest green</td></tr>
+<tr><td>7 pytest, CI</td><td>the five test kinds; the CI workflow file runs them on every push</td></tr>
+<tr><td>8 pdb, ruff</td><td><code>ruff check .</code> is clean and wired into CI; the project note tells one bug story</td></tr>
+<tr><td>9 packaging</td><td>the Linux wheel, the clean-venv install, the image that installs the wheel</td></tr>
+</tbody></table>
+
+<h2>The project note</h2>
+<p>Half a page at the end of <code>README.md</code>, or <code>NOTE.md</code>. Three facts, plainly written, each one a grader can check:</p>
+<ul>
+<li>one real bug the team hit: how it surfaced — a pdb session, a red test, a traceback — and the fix, citing the commit hash where the fix landed; <code>git log --oneline</code> prints the hashes</li>
+<li>one input shape or case the op does not handle, and what happens instead</li>
+<li>one measured observation about the op on a large input, measured with <code>python3 -m cProfile</code>, with the command and the number it printed</li>
+</ul>
+
+<h2>Timeline</h2>
+<ul>
+<li>Early, well before the deadline: the CPU op returns a tensor on the default branch. Check G3 wants commits spread over at least three different days — a project built in one sitting fails it.</li>
+<li>Along the way: <code>pip wheel</code> builds from a clean checkout and installs into a fresh venv; the CI file is committed; the image runs pytest.</li>
+<li>Submission: the last push happens first, then you pack — one zip, the project directory with <code>.git</code> inside — and upload it to lms.skoltech.ru before the deadline. The grader unpacks the zip fresh and grades what is inside; nothing else is handed in.</li>
+</ul>
+
+<h2>Checks (100 points; the project is 40% of the course grade)</h2>
+<table><thead><tr><th>ID</th><th>Points</th><th>Check</th></tr></thead><tbody>
+<tr><td>A1</td><td>10</td><td>The op is real C++: a <code>.cpp</code> implements the README formula on CPU tensors, <code>PYBIND11_MODULE</code> with <code>TORCH_EXTENSION_NAME</code>, built by <code>setup.py</code> with <code>CppExtension</code> and <code>BuildExtension</code></td></tr>
+<tr><td>A2</td><td>4</td><td><code>TORCH_CHECK</code> rejects a dtype the op does not accept, and calling the op on such a tensor raises <code>RuntimeError</code></td></tr>
+<tr><td>A3</td><td>10</td><td>Hidden CPU inputs — one in the normal range, one with a leading batch dimension of 4 — match the pure-PyTorch specification line</td></tr>
+<tr><td>B1</td><td>10</td><td>Each of the five kinds from the Tests section has at least one test and at most two — five to ten tests in total — and <code>pytest</code> passes against the installed wheel</td></tr>
+<tr><td>B2</td><td>4</td><td>The CI workflow is committed at <code>.github/workflows/ci.yml</code> on the default branch, and its run steps name ruff and pytest</td></tr>
+<tr><td>C1</td><td>3</td><td><code>ruff check .</code> is clean on the default branch</td></tr>
+<tr><td>C2</td><td>7</td><td>The project note: one real bug — how it surfaced, the fix, the commit hash — one unhandled case, and one <code>cProfile</code> measurement with the command and the number</td></tr>
+<tr><td>D1</td><td>8</td><td>On the grading machine, <code>pip wheel . --no-deps -w dist</code> from the fresh unpack produces a <code>linux_x86_64</code> wheel</td></tr>
+<tr><td>D2</td><td>6</td><td>A fresh venv with torch from the CPU index installs the wheel; the import works from a neutral directory</td></tr>
+<tr><td>D3</td><td>2</td><td>Hygiene: torch is not inside the wheel, the version is 0.1.0 or higher, and <code>dist/</code>, <code>build/</code>, <code>__pycache__/</code> are not committed</td></tr>
+<tr><td>E1</td><td>6</td><td>The Dockerfile is two-stage — a builder that wheels the project, a final stage that installs torch and then the wheel — <code>.dockerignore</code> keeps <code>.git</code>, <code>dist</code>, <code>build</code> out of the context, and <code>docker build</code> succeeds from the fresh unpack</td></tr>
+<tr><td>E2</td><td>6</td><td><code>docker run</code> executes <code>pytest</code> inside the image and it passes</td></tr>
+<tr><td>F1</td><td>3</td><td>The <code>Makefile</code> targets <code>wheel</code>, <code>install</code>, <code>test</code>, <code>clean</code> do what their names say: <code>wheel</code> is the <code>pip wheel</code> command of the Wheel section, <code>install</code> is <code>pip install dist/*.whl</code>, <code>test</code> is <code>pytest</code>, <code>clean</code> removes <code>dist/</code>, <code>build/</code>, <code>__pycache__/</code></td></tr>
+<tr><td>F2</td><td>6</td><td><code>tools/smoke.sh</code>, executed by the grader from the fresh unpack, performs the steps of the smoke-script section — builds the wheel into <code>dist/</code>, greps the wheel listing for the <code>linux</code> tag, installs it with CPU torch into a fresh venv that has never seen the source tree, and imports and calls the function from a neutral directory — and prints <code>OK</code>; the points are given only to that live run, never to the file</td></tr>
+<tr><td>G1</td><td>3</td><td>The default branch&#8217;s history shows branched work merged in: at least one merge commit, visible in <code>git log --merges</code> and <code>git log --graph</code> in the unpacked <code>.git</code></td></tr>
+<tr><td>G2</td><td>4</td><td>Every member has at least one commit under their <code>AUTHORS</code> email</td></tr>
+<tr><td>G3</td><td>3</td><td>At least 10 commits, spread over at least 3 different days by <code>git log</code> dates</td></tr>
+<tr><td>H1</td><td>5</td><td>The grader works from the README alone: the function name, the formula in words, and build/install/test commands that run as written</td></tr>
+</tbody></table>
+<p>Every check is mandatory: there is no optional item and no cap below 100. The TA grades a fresh unpack of the submitted zip on a CPU-only Linux machine — <code>.git</code> included, so the history checks run on it directly — and the wheel, the <code>tools/smoke.sh</code> run and the image are each built once per team; F2 is scored only from that live run.</p>
+</body>
+</html>

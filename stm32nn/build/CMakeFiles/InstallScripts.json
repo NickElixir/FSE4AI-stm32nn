@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/alex/GitRepos/MScThesisBashirov/FSE4AIProject/stm32nn/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
