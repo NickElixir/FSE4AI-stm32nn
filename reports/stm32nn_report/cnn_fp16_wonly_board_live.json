@@ -10,12 +10,12 @@
   "top1_accuracy": 0.995,
   "top1_disagreement_vs_host_fp32": 0.0,
   "latency_us": {
-    "mean": 510438.6,
-    "p50": 510435.0,
-    "p95": 510501.05,
+    "mean": 510439.52,
+    "p50": 510436.0,
+    "p95": 510501.1,
     "note": "firmware DWT cycle count around LL_ATON_RT_RunEpochBlock; excludes UART I/O"
   },
-  "inferences_per_s": 1.9590994881656678,
+  "inferences_per_s": 1.9590959571468918,
   "samples": [
     {
       "index": 26,
@@ -42,7 +42,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510435,
+      "time_us": 510437,
       "status": 0,
       "logits_mcu": [
         -9.854169845581055,
@@ -62,7 +62,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510449,
+      "time_us": 510450,
       "status": 0,
       "logits_mcu": [
         2.7425971031188965,
@@ -102,7 +102,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510404,
+      "time_us": 510403,
       "status": 0,
       "logits_mcu": [
         -15.846057891845703,
@@ -122,7 +122,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510444,
+      "time_us": 510446,
       "status": 0,
       "logits_mcu": [
         2.3398189544677734,
@@ -142,7 +142,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510419,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -4.092810153961182,
@@ -162,7 +162,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510512,
+      "time_us": 510515,
       "status": 0,
       "logits_mcu": [
         -5.6284403800964355,
@@ -182,7 +182,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510453,
+      "time_us": 510454,
       "status": 0,
       "logits_mcu": [
         -9.293402671813965,
@@ -202,7 +202,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510512,
+      "time_us": 510514,
       "status": 0,
       "logits_mcu": [
         -2.1689398288726807,
@@ -222,7 +222,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510468,
+      "time_us": 510469,
       "status": 0,
       "logits_mcu": [
         -7.736238956451416,
@@ -262,7 +262,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510437,
+      "time_us": 510436,
       "status": 0,
       "logits_mcu": [
         -8.2076997756958,
@@ -322,7 +322,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510412,
+      "time_us": 510413,
       "status": 0,
       "logits_mcu": [
         5.342587947845459,
@@ -342,7 +342,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510490,
+      "time_us": 510492,
       "status": 0,
       "logits_mcu": [
         -8.519929885864258,
@@ -362,7 +362,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510427,
+      "time_us": 510428,
       "status": 0,
       "logits_mcu": [
         -8.772603988647461,
@@ -382,7 +382,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510494,
+      "time_us": 510497,
       "status": 0,
       "logits_mcu": [
         -4.385977268218994,
@@ -402,7 +402,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510443,
+      "time_us": 510445,
       "status": 0,
       "logits_mcu": [
         -9.650725364685059,
@@ -422,7 +422,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510512,
+      "time_us": 510514,
       "status": 0,
       "logits_mcu": [
         -5.504175662994385,
@@ -442,7 +442,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510396,
+      "time_us": 510399,
       "status": 0,
       "logits_mcu": [
         0.5688612461090088,
@@ -462,7 +462,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510500,
+      "time_us": 510501,
       "status": 0,
       "logits_mcu": [
         -7.590674877166748,
@@ -502,7 +502,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510469,
+      "time_us": 510471,
       "status": 0,
       "logits_mcu": [
         -10.621658325195312,
@@ -522,7 +522,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510426,
+      "time_us": 510427,
       "status": 0,
       "logits_mcu": [
         -10.572864532470703,
@@ -542,7 +542,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510374,
+      "time_us": 510375,
       "status": 0,
       "logits_mcu": [
         16.6743106842041,
@@ -562,7 +562,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510480,
+      "time_us": 510481,
       "status": 0,
       "logits_mcu": [
         -3.7627522945404053,
@@ -582,7 +582,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510408,
+      "time_us": 510411,
       "status": 0,
       "logits_mcu": [
         1.6912412643432617,
@@ -602,7 +602,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510468,
+      "time_us": 510469,
       "status": 0,
       "logits_mcu": [
         -10.209761619567871,
@@ -622,7 +622,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510385,
+      "time_us": 510386,
       "status": 0,
       "logits_mcu": [
         -18.984058380126953,
@@ -642,7 +642,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510450,
+      "time_us": 510449,
       "status": 0,
       "logits_mcu": [
         -10.753915786743164,
@@ -662,7 +662,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510436,
+      "time_us": 510438,
       "status": 0,
       "logits_mcu": [
         -18.562267303466797,
@@ -682,7 +682,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510432,
+      "time_us": 510433,
       "status": 0,
       "logits_mcu": [
         -4.57468318939209,
@@ -702,7 +702,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510428,
+      "time_us": 510427,
       "status": 0,
       "logits_mcu": [
         -1.4130988121032715,
@@ -722,7 +722,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510421,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -9.966203689575195,
@@ -742,7 +742,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510463,
+      "time_us": 510464,
       "status": 0,
       "logits_mcu": [
         -0.07419247180223465,
@@ -762,7 +762,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510419,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -14.778482437133789,
@@ -782,7 +782,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510510,
+      "time_us": 510513,
       "status": 0,
       "logits_mcu": [
         -7.145334720611572,
@@ -802,7 +802,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510426,
+      "time_us": 510428,
       "status": 0,
       "logits_mcu": [
         15.028078079223633,
@@ -822,7 +822,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510423,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         17.832176208496094,
@@ -862,7 +862,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510432,
+      "time_us": 510431,
       "status": 0,
       "logits_mcu": [
         -15.108396530151367,
@@ -882,7 +882,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510471,
+      "time_us": 510473,
       "status": 0,
       "logits_mcu": [
         -7.414543151855469,
@@ -902,7 +902,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510456,
+      "time_us": 510457,
       "status": 0,
       "logits_mcu": [
         -13.71240234375,
@@ -922,7 +922,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510429,
+      "time_us": 510428,
       "status": 0,
       "logits_mcu": [
         -18.696807861328125,
@@ -942,7 +942,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510418,
+      "time_us": 510419,
       "status": 0,
       "logits_mcu": [
         -2.8925564289093018,
@@ -962,7 +962,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510404,
+      "time_us": 510403,
       "status": 0,
       "logits_mcu": [
         -11.57553768157959,
@@ -982,7 +982,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510458,
+      "time_us": 510460,
       "status": 0,
       "logits_mcu": [
         -5.7107930183410645,
@@ -1002,7 +1002,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510456,
+      "time_us": 510458,
       "status": 0,
       "logits_mcu": [
         3.0437135696411133,
@@ -1042,7 +1042,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510450,
+      "time_us": 510453,
       "status": 0,
       "logits_mcu": [
         -16.928770065307617,
@@ -1062,7 +1062,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510417,
+      "time_us": 510419,
       "status": 0,
       "logits_mcu": [
         10.419139862060547,
@@ -1102,7 +1102,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510416,
+      "time_us": 510417,
       "status": 0,
       "logits_mcu": [
         0.5932825207710266,
@@ -1122,7 +1122,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510421,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -0.593959629535675,
@@ -1142,7 +1142,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510486,
+      "time_us": 510487,
       "status": 0,
       "logits_mcu": [
         -3.7712223529815674,
@@ -1162,7 +1162,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510426,
+      "time_us": 510427,
       "status": 0,
       "logits_mcu": [
         -5.928641319274902,
@@ -1182,7 +1182,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510419,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -0.5164211988449097,
@@ -1202,7 +1202,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510400,
+      "time_us": 510401,
       "status": 0,
       "logits_mcu": [
         -3.737602472305298,
@@ -1222,7 +1222,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510428,
+      "time_us": 510429,
       "status": 0,
       "logits_mcu": [
         -2.5648093223571777,
@@ -1242,7 +1242,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510404,
+      "time_us": 510405,
       "status": 0,
       "logits_mcu": [
         -15.713698387145996,
@@ -1262,7 +1262,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510503,
+      "time_us": 510505,
       "status": 0,
       "logits_mcu": [
         -4.856100082397461,
@@ -1282,7 +1282,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510406,
+      "time_us": 510408,
       "status": 0,
       "logits_mcu": [
         -14.742904663085938,
@@ -1302,7 +1302,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510517,
+      "time_us": 510520,
       "status": 0,
       "logits_mcu": [
         -7.487948894500732,
@@ -1322,7 +1322,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510438,
+      "time_us": 510439,
       "status": 0,
       "logits_mcu": [
         -10.503019332885742,
@@ -1342,7 +1342,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510440,
+      "time_us": 510442,
       "status": 0,
       "logits_mcu": [
         -5.020629405975342,
@@ -1362,7 +1362,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510440,
+      "time_us": 510439,
       "status": 0,
       "logits_mcu": [
         -9.963017463684082,
@@ -1382,7 +1382,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510434,
+      "time_us": 510436,
       "status": 0,
       "logits_mcu": [
         -6.75606632232666,
@@ -1402,7 +1402,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510441,
+      "time_us": 510442,
       "status": 0,
       "logits_mcu": [
         -12.440364837646484,
@@ -1422,7 +1422,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510464,
+      "time_us": 510466,
       "status": 0,
       "logits_mcu": [
         -7.508717060089111,
@@ -1442,7 +1442,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510429,
+      "time_us": 510428,
       "status": 0,
       "logits_mcu": [
         -5.435018539428711,
@@ -1462,7 +1462,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510424,
+      "time_us": 510425,
       "status": 0,
       "logits_mcu": [
         3.5922789573669434,
@@ -1482,7 +1482,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510452,
+      "time_us": 510455,
       "status": 0,
       "logits_mcu": [
         -1.9504503011703491,
@@ -1502,7 +1502,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510421,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -7.59312105178833,
@@ -1522,7 +1522,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510476,
+      "time_us": 510475,
       "status": 0,
       "logits_mcu": [
         -12.79378890991211,
@@ -1562,7 +1562,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510470,
+      "time_us": 510469,
       "status": 0,
       "logits_mcu": [
         -8.25450611114502,
@@ -1582,7 +1582,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510458,
+      "time_us": 510460,
       "status": 0,
       "logits_mcu": [
         -7.696315288543701,
@@ -1602,7 +1602,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510424,
+      "time_us": 510425,
       "status": 0,
       "logits_mcu": [
         0.05155658721923828,
@@ -1622,7 +1622,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510425,
+      "time_us": 510424,
       "status": 0,
       "logits_mcu": [
         -22.834270477294922,
@@ -1642,7 +1642,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510458,
+      "time_us": 510457,
       "status": 0,
       "logits_mcu": [
         -6.480080604553223,
@@ -1702,7 +1702,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510439,
+      "time_us": 510440,
       "status": 0,
       "logits_mcu": [
         -12.569127082824707,
@@ -1762,7 +1762,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510407,
+      "time_us": 510408,
       "status": 0,
       "logits_mcu": [
         -21.538042068481445,
@@ -1782,7 +1782,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510474,
+      "time_us": 510476,
       "status": 0,
       "logits_mcu": [
         -4.414046287536621,
@@ -1802,7 +1802,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510454,
+      "time_us": 510455,
       "status": 0,
       "logits_mcu": [
         -1.3813974857330322,
@@ -1822,7 +1822,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510420,
+      "time_us": 510422,
       "status": 0,
       "logits_mcu": [
         -6.585472106933594,
@@ -1862,7 +1862,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510465,
+      "time_us": 510467,
       "status": 0,
       "logits_mcu": [
         -13.811574935913086,
@@ -1882,7 +1882,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510435,
+      "time_us": 510437,
       "status": 0,
       "logits_mcu": [
         -22.216344833374023,
@@ -1902,7 +1902,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510413,
+      "time_us": 510414,
       "status": 0,
       "logits_mcu": [
         18.77882957458496,
@@ -1922,7 +1922,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510408,
+      "time_us": 510410,
       "status": 0,
       "logits_mcu": [
         -12.008278846740723,
@@ -1962,7 +1962,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510401,
+      "time_us": 510403,
       "status": 0,
       "logits_mcu": [
         23.388816833496094,
@@ -2002,7 +2002,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510414,
+      "time_us": 510415,
       "status": 0,
       "logits_mcu": [
         -1.8327174186706543,
@@ -2062,7 +2062,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510396,
+      "time_us": 510397,
       "status": 0,
       "logits_mcu": [
         25.039751052856445,
@@ -2082,7 +2082,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510461,
+      "time_us": 510463,
       "status": 0,
       "logits_mcu": [
         -0.0575382336974144,
@@ -2102,7 +2102,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510401,
+      "time_us": 510402,
       "status": 0,
       "logits_mcu": [
         -5.072544574737549,
@@ -2122,7 +2122,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510443,
+      "time_us": 510444,
       "status": 0,
       "logits_mcu": [
         -9.49273681640625,
@@ -2142,7 +2142,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510510,
+      "time_us": 510512,
       "status": 0,
       "logits_mcu": [
         -9.053092002868652,
@@ -2162,7 +2162,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510423,
+      "time_us": 510424,
       "status": 0,
       "logits_mcu": [
         -2.39418888092041,
@@ -2182,7 +2182,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510435,
+      "time_us": 510436,
       "status": 0,
       "logits_mcu": [
         -12.360849380493164,
@@ -2202,7 +2202,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510400,
+      "time_us": 510402,
       "status": 0,
       "logits_mcu": [
         -0.14780938625335693,
@@ -2222,7 +2222,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510376,
+      "time_us": 510377,
       "status": 0,
       "logits_mcu": [
         -4.862784385681152,
@@ -2242,7 +2242,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510404,
+      "time_us": 510405,
       "status": 0,
       "logits_mcu": [
         -10.485136032104492,
@@ -2262,7 +2262,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510435,
+      "time_us": 510436,
       "status": 0,
       "logits_mcu": [
         -0.9274249076843262,
@@ -2282,7 +2282,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510444,
+      "time_us": 510445,
       "status": 0,
       "logits_mcu": [
         -7.3807759284973145,
@@ -2302,7 +2302,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510507,
+      "time_us": 510505,
       "status": 0,
       "logits_mcu": [
         -5.200868606567383,
@@ -2322,7 +2322,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510454,
+      "time_us": 510455,
       "status": 0,
       "logits_mcu": [
         -8.42038345336914,
@@ -2342,7 +2342,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510419,
+      "time_us": 510420,
       "status": 0,
       "logits_mcu": [
         -19.04280662536621,
@@ -2362,7 +2362,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510440,
+      "time_us": 510441,
       "status": 0,
       "logits_mcu": [
         -13.195661544799805,
@@ -2382,7 +2382,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510417,
+      "time_us": 510419,
       "status": 0,
       "logits_mcu": [
         -16.22372817993164,
@@ -2402,7 +2402,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510403,
+      "time_us": 510402,
       "status": 0,
       "logits_mcu": [
         14.98726749420166,
@@ -2422,7 +2422,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510402,
+      "time_us": 510403,
       "status": 0,
       "logits_mcu": [
         17.024608612060547,
@@ -2442,7 +2442,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510466,
+      "time_us": 510468,
       "status": 0,
       "logits_mcu": [
         -7.4104485511779785,
@@ -2482,7 +2482,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510464,
+      "time_us": 510466,
       "status": 0,
       "logits_mcu": [
         -11.092910766601562,
@@ -2502,7 +2502,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510456,
+      "time_us": 510458,
       "status": 0,
       "logits_mcu": [
         -11.462767601013184,
@@ -2522,7 +2522,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510467,
+      "time_us": 510469,
       "status": 0,
       "logits_mcu": [
         -1.9610271453857422,
@@ -2542,7 +2542,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510495,
+      "time_us": 510497,
       "status": 0,
       "logits_mcu": [
         -5.110805511474609,
@@ -2562,7 +2562,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510445,
+      "time_us": 510448,
       "status": 0,
       "logits_mcu": [
         1.6631107330322266,
@@ -2582,7 +2582,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510416,
+      "time_us": 510417,
       "status": 0,
       "logits_mcu": [
         -1.5355372428894043,
@@ -2602,7 +2602,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510410,
+      "time_us": 510411,
       "status": 0,
       "logits_mcu": [
         -14.44847297668457,
@@ -2622,7 +2622,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510426,
+      "time_us": 510428,
       "status": 0,
       "logits_mcu": [
         -14.87443733215332,
@@ -2642,7 +2642,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510438,
+      "time_us": 510440,
       "status": 0,
       "logits_mcu": [
         -9.676614761352539,
@@ -2702,7 +2702,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510458,
+      "time_us": 510459,
       "status": 0,
       "logits_mcu": [
         -6.7778801918029785,
@@ -2722,7 +2722,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510403,
+      "time_us": 510404,
       "status": 0,
       "logits_mcu": [
         -1.1461105346679688,
@@ -2742,7 +2742,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510470,
+      "time_us": 510471,
       "status": 0,
       "logits_mcu": [
         -1.517715573310852,
@@ -2782,7 +2782,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510464,
+      "time_us": 510466,
       "status": 0,
       "logits_mcu": [
         -3.0263376235961914,
@@ -2802,7 +2802,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510382,
+      "time_us": 510385,
       "status": 0,
       "logits_mcu": [
         -6.193536758422852,
@@ -2822,7 +2822,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510438,
+      "time_us": 510437,
       "status": 0,
       "logits_mcu": [
         0.27467429637908936,
@@ -2842,7 +2842,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510415,
+      "time_us": 510416,
       "status": 0,
       "logits_mcu": [
         20.812143325805664,
@@ -2902,7 +2902,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510433,
+      "time_us": 510434,
       "status": 0,
       "logits_mcu": [
         0.20383715629577637,
@@ -2942,7 +2942,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510398,
+      "time_us": 510399,
       "status": 0,
       "logits_mcu": [
         -15.714910507202148,
@@ -2962,7 +2962,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510476,
+      "time_us": 510477,
       "status": 0,
       "logits_mcu": [
         -2.210066556930542,
@@ -2982,7 +2982,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510365,
+      "time_us": 510367,
       "status": 0,
       "logits_mcu": [
         -10.508320808410645,
@@ -3002,7 +3002,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510464,
+      "time_us": 510465,
       "status": 0,
       "logits_mcu": [
         -0.2828066945075989,
@@ -3022,7 +3022,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510373,
+      "time_us": 510375,
       "status": 0,
       "logits_mcu": [
         19.510520935058594,
@@ -3042,7 +3042,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510386,
+      "time_us": 510385,
       "status": 0,
       "logits_mcu": [
         -9.062119483947754,
@@ -3102,7 +3102,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510412,
+      "time_us": 510414,
       "status": 0,
       "logits_mcu": [
         12.242372512817383,
@@ -3122,7 +3122,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510383,
+      "time_us": 510382,
       "status": 0,
       "logits_mcu": [
         -14.270101547241211,
@@ -3142,7 +3142,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510486,
+      "time_us": 510487,
       "status": 0,
       "logits_mcu": [
         -4.714184761047363,
@@ -3162,7 +3162,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510421,
+      "time_us": 510423,
       "status": 0,
       "logits_mcu": [
         -7.901716709136963,
@@ -3182,7 +3182,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510429,
+      "time_us": 510430,
       "status": 0,
       "logits_mcu": [
         -11.116495132446289,
@@ -3242,7 +3242,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510404,
+      "time_us": 510406,
       "status": 0,
       "logits_mcu": [
         -10.28575611114502,
@@ -3282,7 +3282,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510467,
+      "time_us": 510469,
       "status": 0,
       "logits_mcu": [
         -7.704061985015869,
@@ -3322,7 +3322,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510500,
+      "time_us": 510501,
       "status": 0,
       "logits_mcu": [
         -5.539695739746094,
@@ -3342,7 +3342,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510502,
+      "time_us": 510503,
       "status": 0,
       "logits_mcu": [
         -3.6616272926330566,
@@ -3362,7 +3362,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510394,
+      "time_us": 510395,
       "status": 0,
       "logits_mcu": [
         -15.442464828491211,
@@ -3402,7 +3402,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510447,
+      "time_us": 510449,
       "status": 0,
       "logits_mcu": [
         -13.643353462219238,
@@ -3422,7 +3422,7 @@
       "label": 2,
       "pred_mcu": 2,
       "pred_host": 2,
-      "time_us": 510408,
+      "time_us": 510409,
       "status": 0,
       "logits_mcu": [
         -4.980640411376953,
@@ -3462,7 +3462,7 @@
       "label": 9,
       "pred_mcu": 9,
       "pred_host": 9,
-      "time_us": 510440,
+      "time_us": 510442,
       "status": 0,
       "logits_mcu": [
         -12.772290229797363,
@@ -3482,7 +3482,7 @@
       "label": 4,
       "pred_mcu": 4,
       "pred_host": 4,
-      "time_us": 510433,
+      "time_us": 510434,
       "status": 0,
       "logits_mcu": [
         -7.085492134094238,
@@ -3562,7 +3562,7 @@
       "label": 3,
       "pred_mcu": 3,
       "pred_host": 3,
-      "time_us": 510407,
+      "time_us": 510409,
       "status": 0,
       "logits_mcu": [
         -16.40959930419922,
@@ -3602,7 +3602,7 @@
       "label": 6,
       "pred_mcu": 6,
       "pred_host": 6,
-      "time_us": 510414,
+      "time_us": 510416,
       "status": 0,
       "logits_mcu": [
         1.5158491134643555,
@@ -3622,7 +3622,7 @@
       "label": 7,
       "pred_mcu": 7,
       "pred_host": 7,
-      "time_us": 510447,
+      "time_us": 510449,
       "status": 0,
       "logits_mcu": [
         -10.770389556884766,
@@ -3642,7 +3642,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510430,
+      "time_us": 510429,
       "status": 0,
       "logits_mcu": [
         -15.16291618347168,
@@ -3662,7 +3662,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510429,
+      "time_us": 510430,
       "status": 0,
       "logits_mcu": [
         -14.236248016357422,
@@ -3782,7 +3782,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510386,
+      "time_us": 510387,
       "status": 0,
       "logits_mcu": [
         14.982426643371582,
@@ -3802,7 +3802,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510426,
+      "time_us": 510425,
       "status": 0,
       "logits_mcu": [
         -13.299493789672852,
@@ -3822,7 +3822,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510383,
+      "time_us": 510384,
       "status": 0,
       "logits_mcu": [
         20.044376373291016,
@@ -3842,7 +3842,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510409,
+      "time_us": 510410,
       "status": 0,
       "logits_mcu": [
         -16.23487663269043,
@@ -3882,7 +3882,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510433,
+      "time_us": 510434,
       "status": 0,
       "logits_mcu": [
         -6.432436943054199,
@@ -3902,7 +3902,7 @@
       "label": 1,
       "pred_mcu": 1,
       "pred_host": 1,
-      "time_us": 510498,
+      "time_us": 510499,
       "status": 0,
       "logits_mcu": [
         -6.019792079925537,
@@ -3922,7 +3922,7 @@
       "label": 0,
       "pred_mcu": 0,
       "pred_host": 0,
-      "time_us": 510439,
+      "time_us": 510438,
       "status": 0,
       "logits_mcu": [
         16.026132583618164,
@@ -3962,7 +3962,7 @@
       "label": 8,
       "pred_mcu": 8,
       "pred_host": 8,
-      "time_us": 510459,
+      "time_us": 510458,
       "status": 0,
       "logits_mcu": [
         -13.24083423614502,
@@ -3982,7 +3982,7 @@
       "label": 5,
       "pred_mcu": 5,
       "pred_host": 5,
-      "time_us": 510497,
+      "time_us": 510501,
       "status": 0,
       "logits_mcu": [
         -2.601550817489624,

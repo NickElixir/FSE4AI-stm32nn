@@ -38,3 +38,7 @@ docker run --rm fse-ops:0.1
 ```
 
 The project note is `NOTE.md`.
+
+## Weight-only FP16 quantization
+
+`stm32nn.quantize_fp16(tensor)` is the thesis weight quantizer. The default `rounding="nearest"` calls `round_fp16`: each value is stored back in float32 after the IEEE binary16 round. `rounding="stochastic"` rounds the 10-bit mantissa fraction so the expected value stays on the original number. The function does not change activations or the matmul.
