@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61", "torch==2.12.1"]
+requires = ["setuptools>=70,<82", "wheel", "torch==2.12.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,7 @@ name = "stm32nn"
 version = "0.1.0"
 description = "CPU PyTorch op: round float32 values to IEEE FP16 and store them as float32."
 readme = "README.md"
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 authors = [
     { name = "Alexander Bashirov", email = "Aleksandr.Bashirov@skoltech.ru" },
     { name = "Nikolai Lutsenko", email = "Nikolai.Lutsenko@skoltech.ru" },

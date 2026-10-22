@@ -1,34 +1,40 @@
 # Project note
 
-## A bug
+## Real bug and fix
 
-Comparing `round_fp16(torch.tensor([1e-7]))` with `x.to(torch.float16).to(torch.float32)` failed. The kernel returned `5.9604645e-8`. PyTorch returned `1.1920929e-7`. The same gap showed up on other subnormals: every code was one bin low. The subnormal right shift was `15 - half_exp`. A binary16 subnormal is an integer number of units of `2^-24`, and the implicit bit of a binary32 value whose unbiased exponent is `-15` belongs nine bits above the least significant bit of that code, which is a shift of 14. Commit `a8a5bbf` sets the shift to `14 - half_exp` and rounds ties to even. After that commit the two calls agree, including on `1e-7`.
+Comparing `round_fp16(torch.tensor([1e-7]))` with
+`x.to(torch.float16).to(torch.float32)` exposed a subnormal rounding bug:
+the extension returned `5.9604645e-8` instead of `1.1920929e-7`.
+The binary32 significand was shifted by `15 - half_exp`, one bit too far.
+Commit **a8a5bbf** changes it to `14 - half_exp` and applies ties-to-even.
+The commit is preserved in this repository: `git show a8a5bbf`.
+`test_exact_match_on_known_values` now guards that fix, underflow,
+halfway ties, signed zero and overflow. The same conversion code is shared by
+the host extension and the Cortex-M55 compile check.
 
-## A case the op does not handle
+## Unsupported case
 
-A float64 tensor is outside the contract. `round_fp16` requires CPU float32. On `torch.tensor([0.1, 0.2], dtype=torch.float64)` the call raises `RuntimeError` from the C++ `TORCH_CHECK` (`input must be float32`) and returns no tensor.
+A CPU `float64` tensor is outside the contract:
+`round_fp16(torch.tensor([0.1], dtype=torch.float64))` raises
+`RuntimeError: input must be float32` from `TORCH_CHECK` in C++.
+Only CPU float32 is accepted. This operation does not implement autograd.
 
-## A measurement
+## Measured observation
 
-Command, run from `/tmp` against the installed wheel:
+Measured on the Apple Silicon Mac on 22 October 2026, Python 3.12.5,
+PyTorch 2.12.1, against the installed wheel:
 
 ```bash
-python3 -m cProfile -s cumtime /tmp/profile_round_fp16.py
+.venv/bin/python -m cProfile -s cumtime tools/profile_round_fp16.py
 ```
 
-The script was:
-
-```python
-import torch
-from stm32nn import round_fp16
-value = torch.randn(4_000_000)
-round_fp16(value)
-```
-
-`cProfile` printed this line for the kernel:
+The script creates 4,000,000 CPU float32 elements and calls the extension once.
+The kernel line printed:
 
 ```text
-1    0.039    0.039    0.039    0.039 {built-in method stm32nn._C.round_fp16}
+1    0.023    0.023    0.023    0.023 {built-in method stm32nn._C.round_fp16}
 ```
 
-Four million elements took 0.039 seconds inside `round_fp16`.
+That is 23 ms in the extension for this run, excluding tensor creation and
+imports. It measures the Mac CPU, not Cortex-M55. Other machines and runs will
+differ. The profile script and this command reproduce the measurement.
