@@ -17,7 +17,7 @@ x.to(torch.float16).to(torch.float32)
 
 ## Быстрый запуск: MacBook или CPU Linux
 
-Нужны Python **3.11 или 3.12**, `make` и C++-компилятор. На macOS установите
+Нужны Python **3.11 или 3.12**, `make` и C++-компилятор. На Apple Silicon macOS установите
 Xcode Command Line Tools (`xcode-select --install`), на Debian/Ubuntu:
 `sudo apt-get install python3-venv python3-dev build-essential`.
 GPU, STM32, данные MNIST и исследовательский репозиторий не нужны.
@@ -35,8 +35,11 @@ make lint
 `setup` создаёт `.venv` и устанавливает PyTorch 2.12.1, pytest и Ruff.
 На Mac PyTorch берётся из PyPI, на Linux — из официального CPU index.
 Для конкретной версии Python: `make setup PYTHON=python3.12`.
-`wheel` использует уже установленный PyTorch, без второго изолированного
-скачивания. `install` устанавливает wheel из `dist/`.
+`wheel` выполняет обычный `pip wheel . --no-deps -w dist` с включённой
+изоляцией сборки. В `pyproject.toml` для Linux x86_64 и ARM64 указаны официальные
+CPU-wheel PyTorch 2.12.1 для Python 3.11/3.12; на Mac используется PyPI.
+Так изолированная сборка не устанавливает CUDA-версию torch. `install`
+устанавливает wheel из `dist/`.
 `test` копирует тесты во временный каталог и проверяет **установленный wheel**.
 `demo` проверяет известные значения, миллион случайных чисел и ошибку dtype.
 Ожидается **7 passed**, два сообщения `True` и ошибка `input must be float32`.
@@ -47,9 +50,10 @@ make lint
 ./tools/smoke.sh
 ```
 
-Скрипт собирает wheel, проверяет его платформенный тег (`linux` или `macosx`),
-устанавливает в новое окружение, запускает demo и pytest из нейтрального
-каталога. Последняя строка — `OK`. Он работает из любого текущего каталога;
+Скрипт собирает wheel непосредственно в `dist/`, проверяет платформенный тег
+(`linux` или `macosx`) и устанавливает `dist/*.whl` в новое окружение.
+Из нейтрального каталога он сначала выполняет отдельный `import stm32nn`
+без предварительного импорта torch, затем запускает demo и pytest. Последняя строка — `OK`. Он работает из любого текущего каталога;
 исполняемый бит включён в Git. Нужен интернет для установки зависимостей.
 
 Wheel зависит от Python и ОС: Mac wheel нельзя передать Linux-преподавателю.
@@ -57,12 +61,36 @@ Wheel зависит от Python и ОС: Mac wheel нельзя передат�
 собственный wheel. На Intel/AMD Linux тег будет `linux_x86_64`.
 PyTorch не включён внутрь wheel и устанавливается отдельно.
 
+## Проверка pipeline ТЗ на CPU Linux
+
+Из чистой копии проекта (Python 3.11/3.12), без `--no-build-isolation`:
+
+```bash
+python3 -m venv /tmp/build-venv
+/tmp/build-venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+/tmp/build-venv/bin/pip wheel . --no-deps -w dist
+python3 -m venv /tmp/try-venv
+/tmp/try-venv/bin/pip install torch --index-url https://download.pytorch.org/whl/cpu
+/tmp/try-venv/bin/pip install dist/*.whl
+/tmp/try-venv/bin/pip install pytest
+cp -r tests /tmp/proj-tests
+cd /tmp
+/tmp/try-venv/bin/python -c 'import stm32nn; print(stm32nn.__file__)'
+/tmp/try-venv/bin/python -m pytest -q /tmp/proj-tests
+```
+
+Здесь, как и в ТЗ, пути `/tmp/build-venv`, `/tmp/try-venv` и `/tmp/proj-tests`
+должны быть свободны перед запуском. Для повторных проверок используйте smoke:
+он выделяет и очищает уникальные временные каталоги автоматически.
+Проверенная версия runtime и build torch — 2.12.1 (на Linux `2.12.1+cpu`).
+
 ## Docker: воспроизведение на компьютере преподавателя
 
-Нужен запущенный Docker. Оба этапа используют опубликованный образ курса
-`ghcr.io/skolai/fse4ai_2025_02_local_unix:01.10.01`
-(из `fse4ai_2025/compose.yaml`). Если преподаватель использует другой образ,
-его можно указать через `--build-arg COURSE_IMAGE=...`.
+Нужен запущенный Docker. Оба этапа используют **Ubuntu 24.04** — базовый образ,
+подтверждённый преподавателем через команду проекта. Самодостаточная сборка
+устанавливает нужные зависимости внутри образа; файлы соседнего курса и
+локальные Docker-образы не требуются. При смене требований образ можно
+переопределить через `--build-arg COURSE_IMAGE=...`.
 
 ```bash
 docker build -t stm32nn:0.1 .
@@ -104,6 +132,7 @@ make cortex-check
 Другой путь: `make cortex-check ARM_CXX=/path/to/arm-none-eabi-g++`.
 Результат — `build/cortex-m55/round_fp16.o`, ARM-объект из того же `fp16.h`,
 который вызывает PyTorch-расширение. Docker выполняет эту проверку автоматически.
+Это обязательная часть Docker-сборки по требованию преподавателя.
 Она не требует платы и не исполняет ARM-код: это не замер скорости M55
 и не готовая прошивка. Флаг `-mcpu=cortex-m55` нельзя передавать компилятору
 Mac/x86 Linux для сборки загружаемого модуля PyTorch.

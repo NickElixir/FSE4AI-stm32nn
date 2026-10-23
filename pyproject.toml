@@ -1,5 +1,15 @@
 [build-system]
-requires = ["setuptools>=70,<82", "wheel", "torch==2.12.1"]
+# Linux build isolation must use CPU torch too; --no-deps does not skip build dependencies.
+# Official wheel URLs are selected by the BUILD machine, not the Cortex-M55 target.
+requires = [
+    "setuptools>=70,<82",
+    "wheel",
+    "torch==2.12.1; sys_platform != 'linux'",
+    "torch @ https://download.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp311-cp311-manylinux_2_28_x86_64.whl ; sys_platform == 'linux' and python_version == '3.11' and platform_machine == 'x86_64'",
+    "torch @ https://download.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp311-cp311-manylinux_2_28_aarch64.whl ; sys_platform == 'linux' and python_version == '3.11' and platform_machine == 'aarch64'",
+    "torch @ https://download.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl ; sys_platform == 'linux' and python_version == '3.12' and platform_machine == 'x86_64'",
+    "torch @ https://download.pytorch.org/whl/cpu/torch-2.12.1%2Bcpu-cp312-cp312-manylinux_2_28_aarch64.whl ; sys_platform == 'linux' and python_version == '3.12' and platform_machine == 'aarch64'",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +17,7 @@ name = "stm32nn"
 version = "0.1.0"
 description = "CPU PyTorch op: round float32 values to IEEE FP16 and store them as float32."
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.11,<3.13"
 authors = [
     { name = "Alexander Bashirov", email = "Aleksandr.Bashirov@skoltech.ru" },
     { name = "Nikolai Lutsenko", email = "Nikolai.Lutsenko@skoltech.ru" },

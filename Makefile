@@ -16,7 +16,7 @@ setup:
 	$(PY) -m pip install pytest ruff
 
 wheel:
-	$(PY) -m pip wheel . --no-deps --no-build-isolation -w dist
+	$(PY) -m pip wheel . --no-deps -w dist
 
 install:
 	$(PY) -m pip install --force-reinstall --no-deps dist/*.whl

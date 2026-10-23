@@ -12,6 +12,14 @@ The commit is preserved in this repository: `git show a8a5bbf`.
 halfway ties, signed zero and overflow. The same conversion code is shared by
 the host extension and the Cortex-M55 compile check.
 
+## Independent wheel import
+
+A separate fresh Python process running only `import stm32nn` exposed a loader
+error (`Library not loaded: @rpath/libc10.dylib`) that tests beginning with
+`import torch` had masked. The package now imports torch before its linked C++
+extension. Smoke checks this independent import from the neutral directory
+before running the demo and pytest.
+
 ## Unsupported case
 
 A CPU `float64` tensor is outside the contract:

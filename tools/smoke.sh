@@ -14,16 +14,15 @@ cd "$ROOT" &&
 "$PYTHON" -m venv "$WORK/build" &&
 "$WORK/build/bin/python" -m pip install 'setuptools>=70,<82' wheel &&
 "$WORK/build/bin/python" -m pip install 'torch==2.12.1' "${TORCH_SOURCE[@]}" &&
-"$WORK/build/bin/python" -m pip wheel . --no-deps --no-build-isolation -w "$WORK/wheels" &&
-ls "$WORK/wheels" | grep "$TAG" &&
-mkdir -p dist &&
-cp "$WORK"/wheels/*.whl dist/ &&
+"$WORK/build/bin/python" -m pip wheel . --no-deps -w dist &&
+ls dist | grep "$TAG" &&
 "$PYTHON" -m venv "$WORK/try" &&
 "$WORK/try/bin/python" -m pip install 'torch==2.12.1' "${TORCH_SOURCE[@]}" &&
-"$WORK/try/bin/python" -m pip install "$WORK"/wheels/*.whl pytest &&
+"$WORK/try/bin/python" -m pip install dist/*.whl pytest &&
 cp -R tests "$WORK/tests" &&
 cp tools/demo.py "$WORK/demo.py" &&
 cd "$WORK" &&
+"$WORK/try/bin/python" -c 'import stm32nn; print("Installed wheel import:", stm32nn.__file__)' &&
 "$WORK/try/bin/python" demo.py &&
 "$WORK/try/bin/python" -m pytest -q tests &&
 echo OK
